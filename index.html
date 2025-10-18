@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ToDo App - Wireframe Funcional (Single HTML)</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // CORES AJUSTADAS
+            'primary-app': '#1f2937', // Cinza escuro
+            'secondary-app': '#f472b6', // Rosa vibrante
+            'bg-app': '#8fcac7', /* COR DO APLICATIVO */
+            'card-bg': 'white',
+            'danger-app': '#ef4444', // Vermelho para perigo/exclusão
+            'button-highlight': '#6b51f0', // Cor Roxo/Azul para botões principais (ENTRAR, INICIAR)
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Mobile frame look */
+    .mobile-frame {
+      width: 100%;
+      max-width: 420px;
+      height: 820px;
+      border-radius: 34px;
+      box-shadow: 0 20px 40px rgba(20,20,20,0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(#dffaf1, #e6fff4);
+      position: relative;
+    }
+    .status-bar {
+      height: 30px;
+      padding: 0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:#234;
+      font-size:12px;
+    }
+    .screen {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      /* padding-bottom: 0 para que o botão SAIR possa ficar no rodapé */
+      padding-bottom: 0; 
+    }
+    .pie {
+      transform: rotate(-90deg);
+    }
+    input[type="datetime-local"] { line-height: 1.2; }
+    .toast-enter { transform: translateY(120%); }
+    .screen::-webkit-scrollbar{ display: none; }
+    .screen { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Estilo para posicionar o FAB no canto do mobile-frame */
+    .fab-fixed-position {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      /* Ajusta a posição para o canto inferior direito do frame mobile */
+      right: calc(50% - 170px); 
+      bottom: 20px; 
+      z-index: 50;
+    }
+    @media (max-width: 420px) {
+      /* Em telas pequenas, o FAB se comporta como se fosse no canto da tela */
+      .fab-fixed-position {
+        right: 24px;
+        bottom: 24px;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
+
+  <div class="mobile-frame" id="appFrame" role="application" aria-label="ToDo App wireframe">
+
+    <div class="status-bar bg-bg-app">
+      <div class="flex items-center space-x-2">
+        <span class="text-xs font-medium">9:41</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="text-xs">PT</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M12 3v18"/></svg>
+      </div>
+    </div>
+
+    <main class="screen bg-bg-app">
+
+      <section id="login" class="p-6 h-full flex flex-col justify-between" data-screen>
+        <div>
+          <h1 class="text-3xl font-bold text-primary-app text-center">LOGIN</h1>
+          <p class="text-center text-gray-600 mt-1">Bem-vindo(a) de volta!</p>
+
+          <div class="mt-6 space-y-4">
+            <div>
+              <label class="text-sm text-gray-700">Nome de Usuário</label>
+              <input id="loginUser" type="text" placeholder="seu usuário" class="mt-1 w-full p-3 rounded-lg border border-gray-300 focus:ring-primary-app focus:border-primary-app" />
+            </div>
+            
+            <div>
+              <label class="text-sm text-gray-700">Senha</label>
+              <input id="loginPass" type="password" placeholder="••••••" class="mt-1 w-full p-3 rounded-lg border border-gray-300 focus:ring-primary-app focus:border-primary-app" />
+            </div>
+            
+            <div class="flex flex-col items-center text-sm gap-2 mt-4"> 
+                <a href="#" id="forgotLink" class="text-primary-app hover:text-secondary-app font-medium">Esqueceu a senha?</a>
+                <p class="text-gray-500">Não Tem Uma Conta? <a href="#" id="signupLink" class="text-primary-app hover:text-secondary-app font-semibold">Inscrever-se</a></p>
+            </div>
+
+            <button id="btnLogin" class="w-full py-3 bg-button-highlight text-white font-semibold rounded-lg shadow-md mt-6">ENTRAR</button>
+            
+            <p class="text-center text-sm text-gray-500 mt-5">Logar Com</p>
+
+            <div class="flex justify-center gap-6 mt-4"> 
+              <button title="Login com Instagram" class="p-0 bg-transparent border-none"> 
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-pink-600">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </button>
+              <button title="Login com Gmail" class="p-0 bg-transparent border-none"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.78 1.22 9.22 3.65l6.36-6.36C34.61 3.52 29.69 2 24 2 14.82 2 7.03 7.82 4.14 16.51l7.85 6.09C13.43 17.55 18.23 14.5 24 14.5c5.18 0 9.77 2.07 13.06 5.4l.01.01-.01.01C34.78 22.8 29.6 25 24 25c-8.73 0-16.03-5.27-19.14-12.78L.1 12.83C3.68 5.76 13.14 0 24 0z"/>
+                    <path fill="#34A853" d="M4.14 16.51C4.14 17.06 4 17.59 4 18c0 7.86 6.55 14.28 14.61 15.69l-3.3 8.16C13.25 40.48 8.89 38.89 4.8 35.8L0.1 32.22C-.23 31.68-.07 30.95.45 30.64L7.4 26.68C7.65 26.54 7.9 26.4 8.16 26.27C4.78 22.75 2.86 18.59 2.86 14.07C2.86 13.62 2.89 13.17 2.95 12.72L4.14 16.51z"/>
+                    <path fill="#4285F4" d="M43.91 14.07c0 4.52-1.92 8.68-5.3 12.2L34 30.33l-7.4-4.36c-.25-.15-.5-.29-.76-.41c3.27-3.48 5.4-7.85 5.4-12.26 0-5.69-2.02-10.74-5.26-14.77l7.04-5.46C40.67 4.07 43.91 8.82 43.91 14.07z"/>
+                    <path fill="#FBBC04" d="M24 25c-5.6 0-10.78-2.2-14.77-5.74L4.14 16.51C7.03 25.18 14.82 31 24 31c6.51 0 12.28-2.67 16.4-7.07l-6.36-6.36C33.77 22.93 29.18 25 24 25z"/>
+                </svg>
+              </button>
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="text-center text-xs text-gray-500 mb-2">
+          <p>Wireframe funcional — tudo local, sem autenticação real.</p>
+        </div>
+      </section>
+
+      <section id="tarefas" class="p-4 flex flex-col h-full hidden" data-screen>
+        
+        <div id="tarefasHeader" class="flex items-center justify-between mb-3 sticky top-0 bg-bg-app z-10 p-2">
+            <div class="flex items-center gap-3">
+              <div class="bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.938 0 5.676.835 8.879 2.804M12 11a4 4 0 110-8 4 4 0 010 8z"/></svg>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-gray-800">Minhas Tarefas</h2>
+                <p class="text-xs text-gray-500" id="currentDate">12 de setembro</p> 
+              </div>
+            </div>
+        </div>
+
+        <div id="tarefasFilters" class="bg-white p-3 rounded-xl shadow mb-4 sticky top-24 z-10 hidden">
+            <div class="flex justify-around">
+                <button class="filter-btn px-4 py-1 rounded-full text-sm">Todas</button> 
+                <button class="filter-btn px-4 py-1 rounded-full text-sm">Concluídas</button>
+                <button class="filter-btn px-4 py-1 rounded-full text-sm">Pendentes</button>
+            </div>
+        </div>
+
+        <div id="tarefasContent" class="flex-1 flex flex-col items-center justify-center text-center overflow-y-auto w-full">
+            
+            <div id="tarefasPlaceholder">
+                <p class="text-gray-500 mb-6">Nada até o momento, clique no botão abaixo</p>
+                <button id="btnIniciar" class="py-3 px-8 bg-button-highlight text-white rounded-lg text-lg font-semibold shadow-xl">INICIAR</button>
+            </div>
+
+            <div id="tarefasRunning" class="w-full hidden p-1">
+              <div id="taskListArea" class="space-y-3">
+                <p class="text-center text-gray-500">Nenhuma tarefa. Crie uma!</p>
+              </div>
+
+              <div class="mt-6 grid grid-cols-2 gap-3">
+                <div class="bg-white p-3 rounded-xl shadow text-center">
+                  <p class="text-sm text-gray-500">Concluído</p>
+                  <p id="concluidoPercent" class="text-2xl font-bold text-primary-app">0%</p>
+                </div>
+                <div class="bg-white p-3 rounded-xl shadow text-center">
+                  <p class="text-sm text-gray-500">Pendente</p>
+                  <p id="pendentePercent" class="text-2xl font-bold text-danger-app">0%</p>
+                </div>
+              </div>
+
+              <div class="mt-5 flex gap-3">
+                <button id="btnNovo" class="flex-1 py-3 bg-primary-app text-white rounded-lg shadow">NOVO</button>
+                <button id="btnEstatisticas" class="flex-1 py-3 bg-white text-primary-app rounded-lg border border-primary-app font-semibold">ESTATÍSTICAS</button>
+              </div>
+            </div>
+        </div>
+
+        <div class="p-4 bg-bg-app border-t border-gray-200">
+            <button id="btnSair" class="w-full py-3 bg-danger-app text-white rounded-lg text-lg font-semibold shadow-xl hidden">SAIR</button>
+        </div>
+      </section>
+
+      <section id="criar_editar" class="p-4 hidden" data-screen>
+        <div class="flex items-center justify-between sticky top-0 bg-bg-app z-20 mb-4">
+          <button id="btnCancelCreate" class="text-gray-600 hover:text-danger-app p-2">Cancelar</button>
+          <h3 id="formTitle" class="text-lg font-semibold text-gray-800">Nova Tarefa</h3>
+          <span></span>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow space-y-4">
+          <div>
+            <label class="text-sm text-gray-700">Título</label>
+            <input id="taskTitle" type="text" placeholder="Ex: Almoço com família" class="mt-1 w-full p-3 border rounded-lg" />
+          </div>
+          <div>
+            <label class="text-sm text-gray-700">Detalhes</label>
+            <textarea id="taskDetails" rows="3" placeholder="Descrição..." class="mt-1 w-full p-3 border rounded-lg"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm text-gray-700">Início</label>
+              <input id="taskStart" type="datetime-local" class="mt-1 w-full p-2 border rounded-lg" />
+            </div>
+            <div>
+              <label class="text-sm text-gray-700">Fim</label>
+              <input id="taskEnd" type="datetime-local" class="mt-1 w-full p-2 border rounded-lg" />
+            </div>
+          </div>
+          <div>
+            <label class="text-sm text-gray-700">Prioridade</label>
+            <div class="flex gap-4 mt-2">
+              <label class="inline-flex items-center gap-2"><input type="radio" name="prioridade" value="Baixa" />Baixa</label>
+              <label class="inline-flex items-center gap-2"><input type="radio" name="prioridade" value="Média" checked />Média</label>
+              <label class="inline-flex items-center gap-2"><input type="radio" name="prioridade" value="Alta" />Alta</label>
+            </div>
+          </div>
+
+          <div class="flex gap-3 mt-2">
+            <button id="saveTaskBtn" class="flex-1 py-3 bg-primary-app text-white rounded-lg font-semibold">Salvar</button>
+            <button id="editTaskBtn" class="flex-1 py-3 bg-white border border-gray-300 rounded-lg hidden">Salvar Edição</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="detalhes" class="p-4 hidden" data-screen>
+        <div class="flex items-center justify-start sticky top-0 bg-bg-app z-20 mb-4">
+          <button id="btnBackFromDetails" class="text-gray-600 hover:text-primary-app p-2 mr-3">Voltar</button>
+          <h3 class="text-lg font-semibold text-gray-800">Detalhes</h3>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow space-y-3">
+          <h4 id="detailTitle" class="text-2xl font-bold text-gray-800">Título</h4>
+          <div class="flex gap-2 items-center">
+            <span id="detailPriority" class="inline-block px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Prioridade</span>
+            <span id="detailStatus" class="inline-block px-2 py-1 rounded-full text-xs font-medium bg-primary-app/10 text-primary-app">Status</span>
+          </div>
+
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Vencimento / Horário</p>
+            <p id="detailTimes" class="text-sm text-gray-700"></p>
+          </div>
+
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Descrição</p>
+            <p id="detailDesc" class="mt-1 text-sm text-gray-700 bg-gray-50 p-3 rounded border border-gray-200"></p>
+          </div>
+
+          <div class="flex gap-3 mt-4">
+            <button id="btnToggleComplete" class="flex-1 py-3 bg-primary-app text-white rounded-lg">Marcar como Concluída</button>
+            <button id="btnEditFromDetails" class="flex-1 py-3 border border-primary-app text-primary-app rounded-lg">Editar</button>
+          </div>
+
+          <div class="flex gap-3 mt-2">
+            <button id="btnDeleteFromDetails" class="flex-1 py-3 text-danger-app rounded-lg border border-danger-app">Excluir</button>
+            <button id="btnCloseDetails" class="flex-1 py-3 bg-white rounded-lg border border-gray-300">Fechar</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="estatisticas" class="p-4 hidden" data-screen>
+        <div class="flex items-center justify-start sticky top-0 bg-bg-app z-20 mb-4">
+          <button id="btnBackFromStats" class="text-gray-600 p-2 mr-3">Voltar</button>
+          <h3 class="text-xl font-bold text-gray-800">Painel de conclusão de tarefas</h3>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow space-y-4">
+          <div class="text-center">
+            <svg id="pieChart" class="w-40 h-40 mx-auto pie" viewBox="0 0 32 32">
+              <circle r="16" cx="16" cy="16" fill="#f3f4f6"></circle>
+              <circle id="sliceComplete" r="15.9" cx="16" cy="16" fill="transparent" stroke="#10b981" stroke-width="32" stroke-dasharray="0 100" stroke-linecap="butt"></circle>
+              <circle id="slicePending" r="15.9" cx="16" cy="16" fill="transparent" stroke="#f43f5e" stroke-width="32" stroke-dasharray="0 100" stroke-linecap="butt" transform="rotate(0 16 16)"></circle>
+            </svg>
+            <p class="mt-2 text-sm text-gray-600">Percentual de Tarefas Concluídas</p>
+            <p id="statPercent" class="text-2xl font-bold text-primary-app mt-2">0%</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3 bg-gray-50 rounded-xl text-center">
+              <p class="text-sm text-gray-500">Média Diária</p>
+              <p class="text-xl font-bold">--</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-xl text-center">
+              <p class="text-sm text-gray-500">Prioridade Alta</p>
+              <p id="highPriorityCount" class="text-xl font-bold text-danger-app">0</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3 mt-2">
+            <button id="btnContinueFromStats" class="flex-1 py-3 bg-primary-app text-white rounded-lg">CONTINUAR</button>
+            <button id="btnLogoutFromStats" class="flex-1 py-3 bg-danger-app text-white rounded-lg">SAIR</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div> <button id="fab" class="bg-primary-app text-white rounded-full w-14 h-14 flex items-center justify-center shadow-xl hidden fab-fixed-position" title="Adicionar">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+  </button>
+
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-8 bg-gray-800 text-white py-2 px-4 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 z-50"></div>
+
+  <div id="confirmWrap" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+    <div class="bg-white p-4 rounded-xl max-w-xs w-full">
+      <p id="confirmText" class="text-gray-800 text-center mb-4">Tem certeza?</p>
+      <div class="flex justify-center gap-3">
+        <button id="confirmCancel" class="py-2 px-4 border rounded">Cancelar</button>
+        <button id="confirmOk" class="py-2 px-4 bg-danger-app text-white rounded">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========== Estado & utilitários ========== */
+    const screens = {
+      login: document.getElementById('login'),
+      tarefas: document.getElementById('tarefas'),
+      criar_editar: document.getElementById('criar_editar'),
+      detalhes: document.getElementById('detalhes'),
+      estatisticas: document.getElementById('estatisticas')
+    };
+    const fab = document.getElementById('fab');
+    const toast = document.getElementById('toast');
+    const confirmWrap = document.getElementById('confirmWrap');
+    const confirmText = document.getElementById('confirmText');
+    let tasks = []; // {id, title, details, start, end, priority, completed(false/true)}
+    let editingId = null;
+
+    const LS_KEY = 'todo_tasks_v1';
+    
+    // Variáveis para os elementos da tela de tarefas
+    const tarefasPlaceholder = document.getElementById('tarefasPlaceholder');
+    const tarefasRunning = document.getElementById('tarefasRunning');
+    const tarefasFilters = document.getElementById('tarefasFilters');
+    const btnSair = document.getElementById('btnSair');
+
+    // Variável para o estado atual do filtro
+    let currentFilter = 'Todas'; 
+    const filterButtons = Array.from(document.querySelectorAll('.filter-btn'));
+
+    function persist() {
+      localStorage.setItem(LS_KEY, JSON.stringify(tasks));
+    }
+    function loadTasks() {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        try { tasks = JSON.parse(raw) || []; } catch(e){ tasks = []; }
+      } else {
+        tasks = [];
+      }
+    }
+
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+    function showToast(msg, ms=2200) {
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0');
+      setTimeout(()=> toast.classList.add('opacity-0'), ms);
+    }
+
+    function showScreen(name) {
+      Object.values(screens).forEach(s => s.classList.add('hidden'));
+      const sc = screens[name];
+      if (sc) sc.classList.remove('hidden');
+
+      // fab visible only in tarefas screen after started
+      if (name === 'tarefas') {
+        updateFabVisibility();
+        // Lógica: Se o botão SAIR está oculto, a sessão NÃO está iniciada (mostra placeholder)
+        if (btnSair.classList.contains('hidden')) { 
+             tarefasPlaceholder.classList.remove('hidden');
+             tarefasRunning.classList.add('hidden');
+             tarefasFilters.classList.add('hidden');
+             btnSair.classList.add('hidden'); // Garante que SAIR não aparece no placeholder
+        } else { // Sessão iniciada (mostra conteúdo)
+             tarefasPlaceholder.classList.add('hidden');
+             tarefasRunning.classList.remove('hidden');
+             tarefasFilters.classList.remove('hidden');
+             btnSair.classList.remove('hidden'); // Garante que SAIR aparece no modo rodando
+        }
+      } else {
+        fab.classList.add('hidden');
+      }
+      
+      // scroll top for accessibility
+      if (sc) sc.scrollTop = 0;
+      // update date shown
+      if (name === 'tarefas') updateDate();
+    }
+
+    /* ========== NAVIGATION BUTTONS ========== */
+    // login flow
+    document.getElementById('btnLogin').addEventListener('click', () => {
+      // simple validation simulation
+      const u = document.getElementById('loginUser').value.trim();
+      if (!u) { showToast('Informe um nome de usuário'); return; }
+      // simulate login success
+      showToast('Bem-vindo, ' + u + '!');
+      loadTasks();
+      renderTaskList();
+      // Mostra a tela de tarefas no estado inicial (com o botão INICIAR)
+      showScreen('tarefas');
+      // Garante que o botão SAIR e o modo de tarefas rodando estejam escondidos
+      btnSair.classList.add('hidden');
+      tarefasRunning.classList.add('hidden');
+      tarefasPlaceholder.classList.remove('hidden');
+      updateFabVisibility();
+    });
+
+    // Iniciar / Sair buttons on tarefas
+    document.getElementById('btnIniciar').addEventListener('click', () => {
+      showToast('Sessão iniciada');
+      
+      // Esconde o placeholder e mostra o conteúdo de tarefas
+      tarefasPlaceholder.classList.add('hidden');
+      tarefasRunning.classList.remove('hidden');
+      tarefasFilters.classList.remove('hidden');
+      
+      // Mostra o botão SAIR
+      btnSair.classList.remove('hidden'); 
+      
+      // show FAB
+      fab.classList.remove('hidden');
+      // Garante que o filtro inicial seja "Todas" ao iniciar
+      currentFilter = 'Todas';
+      renderTaskList();
+    });
+
+    // Sair (logout)
+    btnSair.addEventListener('click', logout);
+    document.getElementById('btnLogoutFromStats').addEventListener('click', logout);
+    /**
+     * Reverte a aplicação para a tela de login, resetando o estado da tela de tarefas.
+     */
+    function logout() {
+      showToast('Usuário saiu');
+
+      // 1. Esconde o botão SAIR e o FAB
+      btnSair.classList.add('hidden');
+      fab.classList.add('hidden');
+
+      // 2. REVERTE O ESTADO DA TELA DE TAREFAS PARA O INICIAL (Placeholder)
+      if (tarefasRunning) tarefasRunning.classList.add('hidden');
+      if (tarefasFilters) tarefasFilters.classList.add('hidden');
+      if (tarefasPlaceholder) tarefasPlaceholder.classList.remove('hidden');
+      
+      // 3. Reseta o filtro para o padrão
+      currentFilter = 'Todas';
+
+      // 4. Volta para a tela de login
+      showScreen('login');
+    }
+
+    // Novo, estatisticas, fab
+    document.getElementById('btnNovo').addEventListener('click', () => openCreate());
+    fab.addEventListener('click', () => openCreate());
+    document.getElementById('btnEstatisticas').addEventListener('click', () => {
+      showScreen('estatisticas');
+      updateStats(tasks);
+    });
+    
+    // BOTÃO VOLTAR/CONTINUAR da tela de Estatísticas
+    document.getElementById('btnContinueFromStats').addEventListener('click', () => {
+      showScreen('tarefas');
+    });
+    document.getElementById('btnBackFromStats').addEventListener('click', () => {
+      showScreen('tarefas');
+    });
+
+    // Cancel create
+    document.getElementById('btnCancelCreate').addEventListener('click', () => {
+      showScreen('tarefas');
+    });
+
+    // BOTÕES DE VOLTAR/FECHAR da tela de Detalhes
+    document.getElementById('btnBackFromDetails').addEventListener('click', ()=> showScreen('tarefas'));
+    document.getElementById('btnCloseDetails').addEventListener('click', ()=> showScreen('tarefas'));
+
+    // Delete from details
+    document.getElementById('btnDeleteFromDetails').addEventListener('click', () => {
+      confirm('Excluir tarefa?', () => {
+        if (!editingId) return;
+        tasks = tasks.filter(t => t.id !== editingId);
+        persist(); renderTaskList(); showScreen('tarefas'); showToast('Tarefa excluída');
+      });
+    });
+
+    // Toggle complete from details
+    document.getElementById('btnToggleComplete').addEventListener('click', () => {
+      if (!editingId) return;
+      const t = tasks.find(x => x.id === editingId);
+      if (!t) return;
+      t.completed = !t.completed;
+      persist();
+      renderTaskList();
+      showDetails(t.id);
+      showToast(t.completed ? 'Marcada como concluída' : 'Marcada como pendente');
+    });
+
+    // Edit from details -> open create with values
+    document.getElementById('btnEditFromDetails').addEventListener('click', () => {
+      if (!editingId) return;
+      openCreate(editingId);
+    });
+
+    /* ========== CREATE / EDIT ========== */
+    const saveBtn = document.getElementById('saveTaskBtn');
+    const editSaveBtn = document.getElementById('editTaskBtn');
+    saveBtn.addEventListener('click', () => {
+      const newTask = readForm();
+      if (!newTask.title) { showToast('Informe um título'); return; }
+      newTask.id = uid();
+      newTask.completed = false;
+      tasks.unshift(newTask); // latest on top
+      persist();
+      renderTaskList();
+      showScreen('tarefas');
+      showToast('Tarefa criada');
+      clearForm();
+    });
+
+    editSaveBtn.addEventListener('click', () => {
+      if (!editingId) { showToast('Erro na edição'); return; }
+      const updated = readForm();
+      if (!updated.title) { showToast('Informe um título'); return; }
+      const idx = tasks.findIndex(t => t.id === editingId);
+      if (idx === -1) { showToast('Tarefa não encontrada'); return; }
+      tasks[idx] = { ...tasks[idx], ...updated };
+      persist();
+      renderTaskList();
+      showScreen('tarefas');
+      showToast('Tarefa atualizada');
+      clearForm();
+      editingId = null;
+      editSaveBtn.classList.add('hidden');
+      saveBtn.classList.remove('hidden');
+    });
+
+    function readForm() {
+      const title = document.getElementById('taskTitle').value.trim();
+      const details = document.getElementById('taskDetails').value.trim();
+      const start = document.getElementById('taskStart').value || null;
+      const end = document.getElementById('taskEnd').value || null;
+      const pr = document.querySelector('input[name="prioridade"]:checked')?.value || 'Média';
+      return { title, details, start, end, priority: pr };
+    }
+    function clearForm() {
+      document.getElementById('taskTitle').value = '';
+      document.getElementById('taskDetails').value = '';
+      document.getElementById('taskStart').value = '';
+      document.getElementById('taskEnd').value = '';
+      document.querySelector('input[name="prioridade"][value="Média"]').checked = true;
+    }
+
+    function openCreate(id=null) {
+      showScreen('criar_editar');
+      clearForm();
+      editingId = null;
+      document.getElementById('formTitle').textContent = id ? 'Editar Tarefa' : 'Nova Tarefa';
+      document.getElementById('editTaskBtn').classList.add('hidden');
+      document.getElementById('saveTaskBtn').classList.remove('hidden');
+
+      if (id) {
+        const t = tasks.find(x => x.id === id);
+        if (!t) return;
+        // populate
+        document.getElementById('taskTitle').value = t.title;
+        document.getElementById('taskDetails').value = t.details || '';
+        document.getElementById('taskStart').value = t.start || '';
+        document.getElementById('taskEnd').value = t.end || '';
+        document.querySelector(`input[name="prioridade"][value="${t.priority}"]`).checked = true;
+        editingId = id;
+        document.getElementById('editTaskBtn').classList.remove('hidden');
+        document.getElementById('saveTaskBtn').classList.add('hidden');
+      }
+    }
+
+    /* ========== RENDER LIST & DETAILS (COM FILTRO) ========== */
+    function renderTaskList() {
+      const container = document.getElementById('taskListArea');
+      container.innerHTML = '';
+      
+      // 1. APLICAÇÃO DO FILTRO
+      let filteredTasks = tasks;
+      if (currentFilter === 'Concluídas') {
+        filteredTasks = tasks.filter(t => t.completed);
+      } else if (currentFilter === 'Pendentes') {
+        filteredTasks = tasks.filter(t => !t.completed);
+      }
+      
+      // 2. RENDERIZAÇÃO
+      if (!filteredTasks.length) {
+        container.innerHTML = `<p class="text-center text-gray-500">Nenhuma tarefa ${currentFilter === 'Concluídas' ? 'concluída' : currentFilter === 'Pendentes' ? 'pendente' : 'encontrada'}!</p>`;
+        // Usamos tasks (lista completa) para atualizar as estatísticas
+        updateStats(tasks); 
+      } else {
+        filteredTasks.forEach(task => {
+          const card = document.createElement('div');
+          card.className = 'flex items-center justify-between p-4 bg-white rounded-xl shadow cursor-pointer border-l-4 transition active:bg-gray-50';
+          // border color by priority
+          let borderColor = 'border-l-4 border-gray-200';
+          if (task.priority === 'Alta') borderColor = 'border-l-4 border-danger-app';
+          if (task.priority === 'Média') borderColor = 'border-l-4 border-yellow-500';
+          if (task.priority === 'Baixa') borderColor = 'border-l-4 border-blue-500';
+          card.className += ' ' + borderColor;
+
+          card.innerHTML = `
+            <div class="flex-1 pr-3">
+              <p class="${task.completed ? 'text-gray-400 line-through font-semibold' : 'font-semibold text-gray-800'}">${escapeHtml(task.title)}</p>
+              <p class="${task.completed ? 'text-xs text-gray-400' : 'text-xs text-gray-500'} mt-1">${task.start ? formatDateTime(task.start) + (task.end ? ' — ' + formatDateTime(task.end) : '') : (task.details ? task.details.slice(0,80) + (task.details.length > 80 ? '...' : '') : '')}</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <button class="toggleCompleteBtn w-8 h-8 rounded-full ${task.completed ? 'bg-green-500' : 'border border-gray-300'} flex items-center justify-center" data-id="${task.id}" title="Alternar status">
+                ${task.completed ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"></circle></svg>'}
+              </button>
+              <button class="detailsBtn px-3 py-1 bg-white border border-primary-app text-primary-app rounded" data-id="${task.id}">Ver</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        // wire events
+        Array.from(document.querySelectorAll('.detailsBtn')).forEach(btn=>{
+          btn.addEventListener('click', (e)=>{
+            const id = e.currentTarget.dataset.id;
+            showDetails(id);
+          });
+        });
+        Array.from(document.querySelectorAll('.toggleCompleteBtn')).forEach(btn=>{
+          btn.addEventListener('click', (e)=>{
+            const id = e.currentTarget.dataset.id;
+            toggleComplete(id);
+          });
+        });
+        // Usamos tasks (lista completa) para atualizar as estatísticas
+        updateStats(tasks); 
+      }
+      
+      updateFabVisibility();
+      
+      // 3. ATUALIZA O ESTILO DOS BOTÕES DE FILTRO
+      filterButtons.forEach(btn => {
+          const btnText = btn.textContent.trim();
+          if (btnText === currentFilter) {
+              btn.classList.add('bg-primary-app', 'text-white');
+              btn.classList.remove('text-primary-app', 'bg-transparent');
+          } else {
+              btn.classList.remove('bg-primary-app', 'text-white');
+              btn.classList.add('text-primary-app', 'bg-transparent');
+          }
+      });
+    }
+
+    // Função para aplicar o filtro e renderizar
+    function applyFilter(filter) {
+        currentFilter = filter;
+        renderTaskList();
+    }
+    
+    // Adiciona os event listeners aos botões de filtro
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const filterName = e.currentTarget.textContent.trim();
+            applyFilter(filterName);
+        });
+    });
+
+
+    function showDetails(id) {
+      const t = tasks.find(x => x.id === id);
+      if (!t) return;
+      editingId = id; // id currently viewed
+      document.getElementById('detailTitle').textContent = t.title;
+      document.getElementById('detailPriority').textContent = t.priority;
+      document.getElementById('detailPriority').className = 'inline-block px-2 py-1 rounded-full text-xs font-medium ' + (t.priority === 'Alta' ? 'bg-red-100 text-red-700' : t.priority === 'Média' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-700');
+      document.getElementById('detailStatus').textContent = t.completed ? 'Concluída' : 'Pendente';
+      document.getElementById('detailStatus').className = 'inline-block px-2 py-1 rounded-full text-xs font-medium ' + (t.completed ? 'bg-green-100 text-green-700' : 'bg-primary-app/10 text-primary-app');
+      document.getElementById('detailTimes').textContent = (t.start ? formatDateTime(t.start) : '--') + (t.end ? '  até  ' + formatDateTime(t.end) : '');
+      document.getElementById('detailDesc').textContent = t.details || '—';
+      document.getElementById('btnToggleComplete').textContent = t.completed ? 'Marcar como Pendente' : 'Marcar como Concluída';
+      showScreen('detalhes');
+    }
+
+    function toggleComplete(id) {
+      const t = tasks.find(x => x.id === id);
+      if (!t) return;
+      t.completed = !t.completed;
+      persist();
+      // Renderiza a lista de tarefas *com o filtro atual*
+      renderTaskList(); 
+      showToast(t.completed ? 'Concluída' : 'Pendente');
+    }
+
+    /* ========== STATS ========== */
+    function updateStats(taskList = tasks) {
+      const total = taskList.length;
+      const done = taskList.filter(t => t.completed).length;
+      const pct = total ? Math.round((done/total) * 100) : 0;
+      document.getElementById('concluidoPercent').textContent = pct + '%';
+      document.getElementById('pendentePercent').textContent = (100 - pct) + '%';
+      document.getElementById('statPercent').textContent = pct + '%';
+      document.getElementById('highPriorityCount').textContent = taskList.filter(t=>t.priority==='Alta').length;
+
+      // Update pie chart (SVG stroke-dasharray). Circle circumference ~ 100 units for simplicity:
+      const sliceComplete = document.getElementById('sliceComplete');
+      const slicePending = document.getElementById('slicePending');
+
+      // We will set stroke-dasharray as pct and (100-pct).
+      sliceComplete.setAttribute('stroke-dasharray', `${pct} ${100 - pct}`);
+      slicePending.setAttribute('stroke-dasharray', `${100 - pct} ${pct}`);
+      // rotate pending slice so it starts after complete slice
+      slicePending.setAttribute('transform', `rotate(${(pct/100)*360} 16 16)`);
+    }
+
+    /* ========== HELPERS ========== */
+    function formatDateTime(v) {
+      if (!v) return '';
+      try {
+        const d = new Date(v);
+        // locale short
+        return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      } catch(e) { return v; }
+    }
+    function escapeHtml(s) {
+      return String(s||'').replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});
+    }
+
+    // For confirm modal
+    function confirm(text, okCallback) {
+      confirmText.textContent = text;
+      confirmWrap.classList.remove('hidden');
+      document.getElementById('confirmCancel').onclick = () => confirmWrap.classList.add('hidden');
+      document.getElementById('confirmOk').onclick = () => { confirmWrap.classList.add('hidden'); okCallback(); };
+    }
+
+    function updateFabVisibility() {
+      // show fab only in tarefas AND after "iniciar" was pressed (when btnSair is visible)
+      const inTarefas = !screens.tarefas.classList.contains('hidden');
+      const isRunning = !btnSair.classList.contains('hidden');
+      if (inTarefas && isRunning) {
+        fab.classList.remove('hidden');
+      } else {
+        fab.classList.add('hidden');
+      }
+    }
+
+    // update date
+    function updateDate() {
+      const now = new Date();
+      // Ajuste para replicar o estilo "12 de setembro"
+      const options = { day:'2-digit', month:'long' };
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('pt-BR', options);
+    }
+
+    /* ========== BOOT ========== */
+    (function init() {
+      loadTasks();
+      renderTaskList();
+      showScreen('login');
+      // Garante que o botão SAIR e o FAB estão escondidos ao iniciar
+      btnSair.classList.add('hidden');
+      fab.classList.add('hidden');
+    })();
+
+    // small accessibility: support Enter on login form
+    document.getElementById('loginPass').addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter') document.getElementById('btnLogin').click();
+    });
+
+    // simple safety: ask before unload if unsaved editing?
+    window.addEventListener('beforeunload', (e)=>{
+      // no-op, but could show a message
+    });
+  </script>
+</body>
+</html>
