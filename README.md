@@ -1,7 +1,8 @@
-listadetarefas
+
 📝 Aplicativo "to-do list" (lista de tarefas)
 
 O to-do list é uma ferramenta usada para organizar e gerenciar tarefas, sejam elas pessoais ou profissionais, ajudando a aumentar a produtividade e a manter o foco.
+
 
 📌 Descrição do Projeto
 
@@ -11,12 +12,14 @@ Este projeto foi criado como parte da disciplina de Projeto de Interface Web min
 
 O objetivo é gerenciar tarefas de forma simples e intuitiva, permitindo adicionar, marcar como concluída e excluir tarefas.
 
+
 🎨 Wireframe
 
 O wireframe foi criado utilizando o site: Whimsical
 .
 
 O projeto foi desenvolvido com base em um wireframe previamente planejado, que serviu como guia para a criação das telas e interações do aplicativo.
+
 
 💻 Tecnologias Utilizadas
 
@@ -38,6 +41,7 @@ Navegação Rápida: O JavaScript gerencia a alternância entre as telas (login,
 
 Interatividade: Botões e cliques disparam mudanças de tela, e um sistema de toast (mensagens) e modal de confirmação para ações como a exclusão de tarefas.
 
+
 🚀 Como Executar o Projeto
 
 Clonar o Repositório:
@@ -50,15 +54,8 @@ Para executar o projeto, basta abrir o arquivo index.html no seu navegador.
 Alternativamente, acesse a versão online do projeto em:
 https://andreaaraujoliveira.github.io/listadetarefas/index.html
 
+
 ⚙️ Funcionalidades Principais
-
-✅ Adicionar novas tarefas: O usuário pode adicionar novas tarefas à lista.
-
-🗑️ Excluir tarefas concluídas: Tarefas concluídas podem ser removidas da lista.
-
-✏️ Editar nomes de tarefas: O usuário pode editar a descrição das tarefas.
-
-🌙 Alternar entre tema claro/escuro: Um botão permite alternar entre os modos claro e escuro para a interface.
 
 O app é simples, prático e funcional, permitindo ao usuário cadastrar, visualizar, editar e gerenciar suas tarefas diárias de forma eficiente.
 
@@ -96,6 +93,7 @@ Ações: Marcar como concluída, Editar, Excluir.
 Gráfico com percentual de tarefas concluídas vs. pendentes.
 
 Destaque de produtividade semanal/mensal.
+
 
 📸 Imagem do Wireframe
 
